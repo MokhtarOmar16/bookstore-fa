@@ -4,7 +4,8 @@ from core.database import get_db
 from services.books import create_book, get_books
 from schemas.books import BookCreateSchema, BookResponseSchema
 from typing import Annotated
-from utils.pagination import PaginateByPage
+from utils.pagination.paginator import PaginateByPage
+from utils.pagination.schema import PaginatationSchema
 
 router = APIRouter(
     prefix="/books",
@@ -17,8 +18,8 @@ def create_book_endpoint(book: BookCreateSchema, db: Session = Depends(get_db)):
     return create_book(db, book)
 
 
-@router.get("", response_model=list[BookResponseSchema])
-def get_books_endpoint(
+@router.get("", response_model=PaginatationSchema[BookResponseSchema])
+def list_books(
     paginator: Annotated[PaginateByPage, Depends()],
     db:Annotated[Session, Depends(get_db)]
     ):

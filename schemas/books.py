@@ -1,5 +1,5 @@
 from pydantic import BaseModel, ConfigDict
-
+from utils.pagination.schema import PaginatationSchema
 
 
 class BookCreateSchema(BaseModel):
@@ -15,4 +15,5 @@ class BookResponseSchema(BaseModel):
     title: str
     description: str | None = None
     author_id: int
+
 

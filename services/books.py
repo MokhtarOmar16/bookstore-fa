@@ -1,8 +1,10 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy import select, func
+from math import ceil
 from models import Book
 from schemas.books import BookCreateSchema, BookResponseSchema
-from utils.pagination import PaginateByPage
+from utils.pagination.paginator import PaginateByPage
+from utils.pagination.service import paginate
 
 
 def create_book(db: Session, book: BookCreateSchema) -> BookResponseSchema:
@@ -17,6 +19,5 @@ def create_book(db: Session, book: BookCreateSchema) -> BookResponseSchema:
     return db_book
 
 
-def get_books(db: Session, paginator: PaginateByPage) -> list[BookResponseSchema]:
-    stmt = select(Book).offset(paginator.skip).limit(paginator.page_size)
-    return db.scalars(stmt).all()
+def get_books(db: Session, paginator: PaginateByPage) -> dict:
+    return paginate(db, select(Book), paginator)
