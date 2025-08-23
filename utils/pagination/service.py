@@ -2,9 +2,9 @@ from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 from math import ceil
 from utils.pagination.paginator import PaginateByPage
+from utils.pagination.schema import PaginatationSchema, T
 
-
-def paginate(db: Session, stmt, paginator: PaginateByPage):
+def paginate(db: Session, stmt, paginator: PaginateByPage) -> PaginatationSchema[T]:
     # total count
     total_items = db.execute(
         select(func.count()).select_from(stmt.subquery())
