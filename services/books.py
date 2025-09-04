@@ -5,6 +5,7 @@ from models import Book
 from schemas.books import BookCreateSchema, BookResponseSchema
 from utils.pagination.paginator import PaginateByPage
 from utils.pagination.service import paginate
+from utils.pagination.schema import PaginatationSchema
 
 
 def create_book(db: Session, book: BookCreateSchema) -> BookResponseSchema:
@@ -19,5 +20,5 @@ def create_book(db: Session, book: BookCreateSchema) -> BookResponseSchema:
     return db_book
 
 
-def get_books(db: Session, paginator: PaginateByPage) -> dict:
+def get_books(db: Session, paginator: PaginateByPage) -> PaginatationSchema[BookResponseSchema]:
     return paginate(db, select(Book), paginator)

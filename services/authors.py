@@ -13,3 +13,7 @@ def create_author(db: Session, author: AuthorCreateSchema) -> AuthorResponseSche
     db.refresh(db_author)
     return AuthorResponseSchema.model_validate(db_author)
 
+
+def get_authors(db: Session) -> list[AuthorResponseSchema]:
+    authors = db.query(Author).all()
+    return [AuthorResponseSchema.model_validate(author) for author in authors]
